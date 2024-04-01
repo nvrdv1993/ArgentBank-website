@@ -2,12 +2,15 @@ swagger: "2.0"
 info:
   version: "1.0.0"
   title: Transaction Management API
+
+# Définition des chemins (endpoints) pour les transactions
 paths:
-  /transactions:
+  /transaction:
+    # Opération GET pour récupérer toutes les transactions du mois en cours
     get:
       summary: Get all transactions for the current month
       security:
-        - BearerAuth: []
+        - BearerAuth: []  # Sécurité requise pour cette opération
       description: Returns a list of all transactions made by the user for the current month.
       responses:
         200:
@@ -22,10 +25,11 @@ paths:
           description: Forbidden
         500:
           description: Internal Server Error
+    # Opération POST pour ajouter une nouvelle transaction
     post:
       summary: Add a new transaction
       security:
-        - BearerAuth: []
+        - BearerAuth: []  # Sécurité requise pour cette opération
       description: Adds a new transaction to the user's transaction list.
       parameters:
         - name: transaction
@@ -46,11 +50,13 @@ paths:
         500:
           description: Internal Server Error
 
-  /transactions/{transactionId}:
+  # Chemin pour accéder à une transaction spécifique en utilisant son ID
+  /transaction/{transactionId}:
+    # Opération GET pour récupérer les détails d'une transaction spécifique
     get:
       summary: Get details of a transaction
       security:
-        - BearerAuth: []
+        - BearerAuth: []  # Sécurité requise pour cette opération
       description: Returns the details of a specific transaction identified by {transactionId}.
       parameters:
         - name: transactionId
@@ -71,10 +77,11 @@ paths:
           description: Transaction not found - Invalid transaction ID
         500:
           description: Internal Server Error
+    # Opération PUT pour mettre à jour les informations d'une transaction spécifique
     put:
       summary: Update information of a transaction
       security:
-        - BearerAuth: []
+        - BearerAuth: []  # Sécurité requise pour cette opération
       description: Updates the information of a specific transaction identified by {transactionId}.
       parameters:
         - name: transactionId
@@ -102,13 +109,16 @@ paths:
         500:
           description: Internal Server Error
 
+# Définition des schémas de sécurité pour l'authentification
 securityDefinitions:
   BearerAuth:
     type: apiKey
     name: Authorization
     in: header
 
+# Définition des modèles de données pour les transactions
 definitions:
+  # Modèle de données pour mettre à jour une transaction
   TransactionUpdate:
     type: object
     properties:
@@ -118,6 +128,7 @@ definitions:
       note:
         type: string
         description: Additional note for the transaction
+  # Modèle de données pour une transaction
   Transaction:
     type: object
     properties:
