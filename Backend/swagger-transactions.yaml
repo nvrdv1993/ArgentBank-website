@@ -5,7 +5,7 @@ info:
 
 # Définition des chemins (endpoints) pour les transactions
 paths:
-  /transaction:
+  /transactions:
     # Opération GET pour récupérer toutes les transactions du mois en cours
     get:
       summary: Get all transactions for the current month
@@ -25,31 +25,8 @@ paths:
           description: Forbidden
         500:
           description: Internal Server Error
-    # Opération POST pour ajouter une nouvelle transaction
-    post:
-      summary: Add a new transaction
-      security:
-        - BearerAuth: []  # Sécurité requise pour cette opération
-      description: Adds a new transaction to the user's transaction list.
-      parameters:
-        - name: transaction
-          in: body
-          description: Object representing the new transaction
-          required: true
-          schema:
-            $ref: "#/definitions/Transaction"
-      responses:
-        200:
-          description: Success - Transaction successfully added
-        400:
-          description: Bad Request - Data validation error
-        401:
-          description: Unauthorized - Invalid token
-        403:
-          description: Forbidden
-        500:
-          description: Internal Server Error
-
+          
+  # Opération POST pour ajouter une nouvelle transaction
   # Chemin pour accéder à une transaction spécifique en utilisant son ID
   /transaction/{transactionId}:
     # Opération GET pour récupérer les détails d'une transaction spécifique
@@ -75,6 +52,34 @@ paths:
           description: Forbidden
         404:
           description: Transaction not found - Invalid transaction ID
+        500:
+          description: Internal Server Error
+    post:
+      summary: Add a new transaction
+      security:
+        - BearerAuth: []  # Sécurité requise pour cette opération
+      description: Adds a new transaction to the user's transaction list.
+      parameters:
+        - name: transactionId
+          in: path
+          description: ID of the transaction to retrieve details
+          required: true
+          type: string
+        - name: transaction
+          in: body
+          description: Object representing the new transaction
+          required: true
+          schema:
+            $ref: "#/definitions/Transaction"
+      responses:
+        200:
+          description: Success - Transaction successfully added
+        400:
+          description: Bad Request - Data validation error
+        401:
+          description: Unauthorized - Invalid token
+        403:
+          description: Forbidden
         500:
           description: Internal Server Error
     # Opération PUT pour mettre à jour les informations d'une transaction spécifique
